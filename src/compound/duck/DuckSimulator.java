@@ -1,7 +1,6 @@
 package compound.duck;
 
 public class DuckSimulator {
-
     public static void main(String[] args) {
         DuckSimulator simulator = new DuckSimulator();
         AbstractDuckFactory duckFactory = new CountingDuckFactory();
@@ -10,12 +9,11 @@ public class DuckSimulator {
     }
 
     void simulate(AbstractDuckFactory duckFactory) {
+
         Quackable redheadDuck = duckFactory.createRedheadDuck();
         Quackable duckCall = duckFactory.createDuckCall();
         Quackable rubberDuck = duckFactory.createRubberDuck();
         Quackable gooseDuck = new GooseAdapter(new Goose());
-
-        System.out.println("\nDuck Simulator: With Composite - Flocks");
 
         Flock flockOfDucks = new Flock();
 
@@ -38,11 +36,12 @@ public class DuckSimulator {
 
         flockOfDucks.add(flockOfMallards);
 
-        System.out.println("\nDuck Simulator: Whole Flock Simulation");
-        simulate(flockOfDucks);
+        System.out.println("\nDuck Simulator: With Observer");
 
-        System.out.println("\nDuck Simulator: Mallard Flock Simulation");
-        simulate(flockOfMallards);
+        Quackologist quackologist = new Quackologist();
+        flockOfDucks.registerObserver(quackologist);
+
+        simulate(flockOfDucks);
 
         System.out.println("\nThe ducks quacked " +
                 QuackCounter.getQuacks() +

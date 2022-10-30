@@ -1,5 +1,7 @@
-package clothesShopToyProject.signUp;
+package clothesShopToyProject.signup;
 
+
+import clothesShopToyProject.productfactory.ConditionInputException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,13 +11,30 @@ import java.util.*;
 public class loginAuthentication {
     private static Set<User> userData;
     private BufferedReader br;
+    public static boolean loginStatus = false;
 
     public loginAuthentication() {
         userData = new HashSet<>();
-        br = new BufferedReader(new InputStreamReader(System.in));
-
-
     }
+
+    public boolean getLoginStatus(){
+        return loginStatus;
+    }
+
+    public void process() throws IOException, ConditionInputException {
+
+        System.out.println("---- 1. 회원가입 | 2. 로그인 ----");
+        br = new BufferedReader(new InputStreamReader(System.in));
+        int loginNum = Integer.parseInt(br.readLine());
+        if (loginNum == 1) {
+            signUp();
+            process();
+        } else if (loginNum == 2) {
+            login();
+        } else
+            throw new ConditionInputException("1이나 2 숫자만 입력하세요");
+    }
+
 
     private void signUp() throws IOException {
         System.out.println("----------회원가입----------");
@@ -41,8 +60,8 @@ public class loginAuthentication {
         Iterator<User> iter = userData.iterator();
         while (iter.hasNext()) {
             User nextUser = iter.next();
-
-            if (id.equals(nextUser)) {
+            System.out.println(nextUser.getId());
+            if (id.equals(nextUser.getId())) {
                 return false;
             }
         }
@@ -64,16 +83,13 @@ public class loginAuthentication {
 
             if (id.equals(nextUser.getId()) && password.equals(nextUser.getPassword())) {
                 System.out.println("로그인 성공!");
-                return true;
-            } else if (!id.equals(nextUser.getId()) && password.equals(nextUser.getPassword())) {
-                System.out.println("잘못된 id를 입력하였습니다.");
-                return false;
-            } else if (id.equals(nextUser.getId()) && !password.equals(nextUser.getPassword())) {
-                System.out.println("잘못된 비밀번호를 입력하였습니다.");
-                return false;
+                return loginStatus = true;
+            } else if (!id.equals(nextUser.getId()) || !password.equals(nextUser.getPassword())) {
+                System.out.println("잘못된 id 또는 password를 입력하였습니다.");
+                return loginStatus = false;
             }
         }
-        return false;
+        return loginStatus = false;
     }
 }
 

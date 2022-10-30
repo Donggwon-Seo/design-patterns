@@ -1,4 +1,4 @@
-package clothesShopToyProject.signUp;
+package clothesShopToyProject.signup;
 
 public class User {
     private String id;

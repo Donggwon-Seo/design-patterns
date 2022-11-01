@@ -1,6 +1,7 @@
 package clothesShopToyProject.productfactory;
 
 import clothesShopToyProject.product.Clothes;
+import clothesShopToyProject.transform.TransformEnumClothes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,24 +9,29 @@ import java.io.InputStreamReader;
 
 public class ClothesFactory {
     private BufferedReader br;
+//    private TransformEnumClothes tfClothes;
 
-    public Clothes createClothes(int tmp) throws ConditionInputException, IOException {
+    public Clothes createClothes(String tmp) throws ConditionInputException, IOException {
         Clothes clothes;
         int size;
 
-        if (tmp == 1) {
-            size = selectSize();
-            clothes = new Clothes("후드티", "STUSSY", size,150000);
-        } else if (tmp == 2) {
-            size = selectSize();
-            clothes = new Clothes("맨투맨", "Romantic Crown", size,69000);
-        } else if (tmp == 3) {
-            size = selectSize();
-            clothes = new Clothes("니트", "8DIVISION", size,120000);
-        } else {
-            throw new ConditionInputException("1 ~ 3의 값만 입력하세요.");
+        switch (TransformEnumClothes.transformEnumClothes(tmp)) {
+            case STUUSY -> {
+                size = selectSize();
+                clothes = new Clothes("후드티", "STUSSY", size, 150000);
+            }
+            case ROMANTIC_CROWN -> {
+                size = selectSize();
+                clothes = new Clothes("맨투맨", "Romantic Crown", size, 69000);
+            }
+            case EIGHT_DIVISION -> {
+                size = selectSize();
+                clothes = new Clothes("니트", "8DIVISION", size, 120000);
+            }
+            default -> {
+                throw new ConditionInputException("");
+            }
         }
-
         return clothes;
     }
 
@@ -34,19 +40,30 @@ public class ClothesFactory {
         System.out.println("-------- 사이즈를 선택하여 주세요 ----");
         System.out.println("---- 1. 90 | 2. 95 | 3. 100 | 4. 105 | 5. 110 ----");
 
-        int selectSize = Integer.parseInt(br.readLine());
+        String selectSize = br.readLine();
 
-        if (selectSize == 1)
-            return 90;
-        else if (selectSize == 2)
-            return 95;
-        else if (selectSize == 3)
-            return 100;
-        else if (selectSize == 4)
-            return 105;
-        else if (selectSize == 5)
-            return 110;
-        else
-            throw new ConditionInputException("90 ~ 110 사이즈만 있습니다. 1부터 5 사이의 숫자만 입력하세요");
+        int size = switch (TransformEnumClothes.transformEnumClothesSize(selectSize)) {
+            case NINETY -> {
+                yield 90;
+            }
+            case NINETY_FIVE -> {
+                yield 95;
+            }
+            case ONE_HUNDRED -> {
+                yield 100;
+            }
+            case ONE_HUNDRED_FIVE -> {
+                yield 105;
+            }
+            case ONE_HUNDRED_TEN -> {
+                yield 110;
+            }
+            default -> {
+                throw new ConditionInputException("");
+            }
+        };
+        return size;
     }
 }
+
+

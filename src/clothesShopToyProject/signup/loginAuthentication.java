@@ -2,22 +2,24 @@ package clothesShopToyProject.signup;
 
 
 import clothesShopToyProject.productfactory.ConditionInputException;
+import clothesShopToyProject.transform.TransformEnumLogin;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-public class loginAuthentication {
+public class LoginAuthentication {
     private static Set<User> userData;
     private BufferedReader br;
     public static boolean loginStatus = false;
+//    private TransformEnumLogin tf;
 
-    public loginAuthentication() {
+    public LoginAuthentication() {
         userData = new HashSet<>();
     }
 
-    public boolean getLoginStatus(){
+    public boolean getLoginStatus() {
         return loginStatus;
     }
 
@@ -25,14 +27,24 @@ public class loginAuthentication {
 
         System.out.println("---- 1. 회원가입 | 2. 로그인 ----");
         br = new BufferedReader(new InputStreamReader(System.in));
-        int loginNum = Integer.parseInt(br.readLine());
-        if (loginNum == 1) {
-            signUp();
-            process();
-        } else if (loginNum == 2) {
-            login();
-        } else
-            throw new ConditionInputException("1이나 2 숫자만 입력하세요");
+
+        String selectAuth = br.readLine();
+//      tf = TransformEnumLogin.LOGIN;
+
+        switch (TransformEnumLogin.transform(selectAuth)) {
+
+            case SIGNUP -> {
+//              System.out.println(tf);
+                signUp();
+                process();
+            }
+            case LOGIN -> {
+                login();
+            }
+            default -> {
+                throw new ConditionInputException("");
+            }
+        }
     }
 
 
